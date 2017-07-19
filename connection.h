@@ -7,3 +7,5 @@
 #define ERROR -1
 
 int setup();
+
+#endif
