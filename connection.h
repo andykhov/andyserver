@@ -6,6 +6,6 @@
 
 #define ERROR -1
 
-int setup();
+int setupLocalSocket();
 
 #endif
