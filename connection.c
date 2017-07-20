@@ -1,16 +1,16 @@
 //returns a new local socket file descriptor
 int setupLocalSocket(unsigned short port, int queueSize) {
-   int socketfd, on;
+   int localsocket, on;
    struct sockaddr_in localaddr;
    on = 1;
 
-   //creates new socket file descriptor 
-   if ((socketfd = socket(AF_INET, SOCK_STREAM, 0)) == ERROR) return ERROR;
+   //creates new socket file descriptor
+   if ((localsocket = socket(AF_INET, SOCK_STREAM, 0)) == ERROR) return ERROR;
 
    //sets socket options for socketfd
    //SOL_SOCKET sets to generic socket option
    //SO_REUSEADDR enabled to restart a TIME_WAIT process on a port/address
-   if (setsockopt(socketfd, SOL_SOCKET, SO_REUSEADDR, &on, sizeof(int)) == ERROR) return ERROR;
+   if (setsockopt(localsocket, SOL_SOCKET, SO_REUSEADDR, &on, sizeof(int)) == ERROR) return ERROR;
 
    //setup socket address
    localaddr.sin_family = AF_INET; //AF_INET represents IPv4
@@ -19,10 +19,24 @@ int setupLocalSocket(unsigned short port, int queueSize) {
    memset(&(local.sin_zero), 0, 8); //sets leftover byte to 0
 
    //associate socket to address
-   if (bind(socketfd, (struct sockaddr *) &localaddr, sizeof(struct sockaddr)) == ERROR) return ERROR;
+   if (bind(localsocket, (struct sockaddr *) &localaddr, sizeof(struct sockaddr)) == ERROR) return ERROR;
 
    //begin to accept (or wait for) connection requests
-   if (listen(socketfd, queueSize) == ERROR) return ERROR;
+   if (listen(localsocket, queueSize) == ERROR) return ERROR;
 
    return socketfd;
+}
+
+int connectToClient(int localsocket) {
+   struct sockaddr_in clientaddr;
+   socklen_t clientaddrsize = sizeof(clientaddr);
+   int clientsocket = -1;
+
+   //gets 1st pending connection request in queue of localsocket
+   //returns new socket file descriptor that is connected to the client
+   while (clientsocket < 0) {
+      clientsocket = accept(localsocket, (struct sockaddr *) &clientaddr, &clientaddrsize);
+   }
+
+   return clientsocket;
 }

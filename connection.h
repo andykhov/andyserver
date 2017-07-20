@@ -7,5 +7,6 @@
 #define ERROR -1
 
 int setupLocalSocket();
+int connectToClient();
 
 #endif
