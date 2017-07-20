@@ -1,15 +1,17 @@
-andyserver by andykhov (in progress)
+# andyserver by andykhov (in progress)
 
 HTTP 1.0 mini webserver
 
 This project was created to learn about networks and HTTP
 
-TODO:
+Compiled with gcc
 
-finish establishing connection to network
+###TODO:
 
-fulfill HEAD requests
+..*create method to shutdown server
 
-fulfill GET requests
+..*fulfill HEAD requests
 
-fulfill error header messages
+..*fulfill GET requests
+
+..*fulfill error header messages
