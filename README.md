@@ -6,12 +6,12 @@ This project was created to learn about networks and HTTP
 
 Compiled with gcc
 
-###TODO:
+### TODO:
 
-..*create method to shutdown server
+- create method to shutdown server
 
-..*fulfill HEAD requests
+- fulfill HEAD requests
 
-..*fulfill GET requests
+- fulfill GET requests
 
-..*fulfill error header messages
+- fulfill error header messages
