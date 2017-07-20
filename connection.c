@@ -1,3 +1,5 @@
+#include "connection.h"
+
 //returns a new local socket file descriptor
 int setupLocalSocket(unsigned short port, int queueSize) {
    int localsocket, on;
@@ -16,7 +18,7 @@ int setupLocalSocket(unsigned short port, int queueSize) {
    localaddr.sin_family = AF_INET; //AF_INET represents IPv4
    localaddr.sin_port = htons(port); //converts host port to network TCP big-endian byte order
    localaddr.sin_addr.s_addr = INADDR_ANY; //receive packets from anywhere in system's network interface
-   memset(&(local.sin_zero), 0, 8); //sets leftover byte to 0
+   memset(&(localaddr.sin_zero), 0, 8); //sets leftover byte to 0
 
    //associate socket to address
    if (bind(localsocket, (struct sockaddr *) &localaddr, sizeof(struct sockaddr)) == ERROR) return ERROR;
@@ -24,16 +26,16 @@ int setupLocalSocket(unsigned short port, int queueSize) {
    //begin to accept (or wait for) connection requests
    if (listen(localsocket, queueSize) == ERROR) return ERROR;
 
-   return socketfd;
+   return localsocket;
 }
 
+//returns new socket file descriptor that is connected to client
 int connectToClient(int localsocket) {
    struct sockaddr_in clientaddr;
    socklen_t clientaddrsize = sizeof(clientaddr);
    int clientsocket = -1;
 
    //gets 1st pending connection request in queue of localsocket
-   //returns new socket file descriptor that is connected to the client
    while (clientsocket < 0) {
       clientsocket = accept(localsocket, (struct sockaddr *) &clientaddr, &clientaddrsize);
    }
