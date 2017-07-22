@@ -16,7 +16,7 @@ int main(int argc, char **argv) {
 }
 
 void checkSocket(int socketfd) {
-   if (socket < 0) {
+   if (socketfd < 0) {
       printf("socket error, could be port #\n");
       exit(1);
    }
