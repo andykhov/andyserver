@@ -7,9 +7,11 @@
 #include <signal.h>
 #include <sys/socket.h>
 
+void enableServer();
+void listenForClients();
 int getPort();
 void checkSocket();
-void printUsageError();
+void exitUsageError();
 void setupShutdown();
 void serverClose();
 void setupCHLDaction();

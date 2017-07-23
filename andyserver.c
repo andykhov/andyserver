@@ -2,6 +2,7 @@
 #include "connection.h"
 
 #define QUEUESIZE 10
+#define ON 1
 
 static int children = 0;
 static int localsocket;
@@ -12,7 +13,29 @@ int main(int argc, char **argv) {
    checkSocket(localsocket);
    setupShutdown();
    setupCHLDaction();
+   enableServer(port);
    return 0;
+}
+
+void enableServer(int port) {
+   printf("andyserver enabled on port %d...\nlistening for client requests\n", port);
+
+   while (ON) listenForClients();
+}
+
+void listenForClients() {
+   int clientsocket;
+   pid_t childPid;
+
+   clientsocket = connectToClient(localsocket);
+   children++;
+
+   if ((childPid = fork()) < 0) {
+      children--;
+      printf("internal error: fork\n");
+   }
+
+   else if (childPid > 0) exit(0); /* serve request */
 }
 
 void checkSocket(int socketfd) {
@@ -26,25 +49,20 @@ void checkSocket(int socketfd) {
 int getPort(int argc, char **argv) {
    int port;
 
-   if (argc != 2) {
-      printUsageError();
-      exit(1);
-   }
+   if (argc != 2) exitUsageError();
 
    port = atoi(argv[1]);
 
    /* 1-1024 are reserved port #'s
     * 65535 is the max port # in IPv4 */
-   if (port <= 1024 || port > 65535) {
-      printUsageError();
-      exit(1);
-   }
+   if (port <= 1024 || port > 65535) exitUsageError();
 
    return port;
 }
 
-void printUsageError() {
+void exitUsageError() {
    printf("Usage: andyserver <port>, 1024 < port < 65535\n");
+   exit(1);
 }
 
 /* setup shutdown mechanism for server
