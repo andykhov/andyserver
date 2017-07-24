@@ -6,12 +6,4 @@ This project was created to learn about networks and HTTP
 
 Compiled with gcc
 
-### TODO:
-
-- create method to shutdown server
-
-- fulfill HEAD requests
-
-- fulfill GET requests
-
-- fulfill error header messages
+Max request length: 8KB

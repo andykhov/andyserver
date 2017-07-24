@@ -1,5 +1,6 @@
 #include "andyserver.h"
 #include "connection.h"
+#include "http.h"
 
 #define QUEUESIZE 10
 #define ON 1
@@ -7,7 +8,7 @@
 static int children = 0;
 static int localsocket;
 
-int main(int argc, char **argv) {
+int main(int argc, char ** argv) {
    int port = getPort(argc, argv);
    localsocket = setupLocalSocket((unsigned short) port, QUEUESIZE);
    checkSocket(localsocket);
@@ -18,7 +19,7 @@ int main(int argc, char **argv) {
 }
 
 void enableServer(int port) {
-   printf("andyserver enabled on port %d...\nlistening for client requests\n", port);
+   printf("andyserver enabled on port %d...\nlistening for client requests...\n", port);
 
    while (ON) listenForClients();
 }
@@ -30,14 +31,16 @@ void listenForClients() {
    clientsocket = connectToClient(localsocket);
    children++;
 
+   /* forks new child process */
    if ((childPid = fork()) < 0) {
       children--;
       printf("internal error: fork\n");
    }
 
+   /* child process will fulfill request from client */
    else if (childPid == 0) {
-      printf("here\n");
-      exit(0); /* serve request */
+      fulfillRequest(clientsocket);
+      exit(0);
    }
 }
 
@@ -49,7 +52,7 @@ void checkSocket(int socketfd) {
 }
 
 /* returns indicated port # from command line args */
-int getPort(int argc, char **argv) {
+int getPort(int argc, char ** argv) {
    int port;
 
    if (argc != 2) exitUsageError();
