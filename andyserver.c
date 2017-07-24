@@ -35,7 +35,10 @@ void listenForClients() {
       printf("internal error: fork\n");
    }
 
-   else if (childPid > 0) exit(0); /* serve request */
+   else if (childPid == 0) {
+      printf("here\n");
+      exit(0); /* serve request */
+   }
 }
 
 void checkSocket(int socketfd) {
