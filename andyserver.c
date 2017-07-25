@@ -87,6 +87,7 @@ void setupShutdown() {
 /* closes server
  * waits for child processes to close */
 void serverClose() {
+   printf("finishing requests...\n");
    while (children);
    shutdown(localsocket, SHUT_RDWR);
    exit(0);
