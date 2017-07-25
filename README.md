@@ -13,9 +13,10 @@
 - GET Method (in progress)
 
 ### Example of a response
-**"HTTP/1.0 200 OK
-**Content-Length: 1234
+"HTTP/1.0 200 OK
 
-**"
+Content-Length: 1234
+
+"
 
 As you can see, my webserver responds with a very limited subset of the HTTP response.
