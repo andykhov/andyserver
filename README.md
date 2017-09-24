@@ -10,7 +10,6 @@
 
 ### Supported Methods
 - HEAD Method
-- GET Method (in progress)
 
 ### Example of a response
 "HTTP/1.0 200 OK
