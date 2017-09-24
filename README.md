@@ -1,4 +1,4 @@
-# andyserver by andykhov (in progress)
+# andyserver by andykhov
 
  - HTTP 1.0 mini webserver with IPv4
 
